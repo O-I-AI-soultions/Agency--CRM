@@ -52,9 +52,25 @@ AUTH_SECRET=              # long random string used to sign session cookies
   the columns).
 - **Clients** — Client Name, Setup Fee, Monthly Retainer, Status (Active/Inactive).
 
+## Deployment (Vercel)
+
+1. Go to [vercel.com](https://vercel.com) → New Project → Import from GitHub
+2. Select `O-I-AI-soultions/Agency--CRM`
+3. Add all variables from `.env.example` with real values:
+   - `AIRTABLE_API_KEY` — Airtable personal access token (Settings → Developer Hub)
+   - `AIRTABLE_BASE_ID` — `appecLcxk0qS8mNGV`
+   - `DASHBOARD_PASSWORD` — shared login password for the dashboard
+   - `AUTH_SECRET` — any random 32+ character string used to sign session cookies
+   - `APIFY_API_TOKEN` — Apify API token (apify.com → Settings → Integrations)
+   - `NEXT_PUBLIC_PARTNER_NAME` — your first name
+4. Click Deploy
+5. Optional: set a custom domain (e.g. `crm.o-i.co.il`)
+
+Both partners use the same deployed URL. To set your own name locally, override
+`NEXT_PUBLIC_PARTNER_NAME` in `.env.local` when running dev mode.
+
 ## Notes
 
 - This is a separate repo from the main O-I lead-pipeline project — see
   [O-I-AI-soultions/O-I](https://github.com/O-I-AI-soultions) for the Apify → Make →
   Airtable scraping pipeline that feeds the "Lead Tracker" table.
-- Deployment target (e.g. Vercel) is not yet configured.
