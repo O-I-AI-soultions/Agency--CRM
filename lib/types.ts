@@ -7,7 +7,7 @@ export const KANBAN_STATUSES = [
 
 export type KanbanStatus = (typeof KANBAN_STATUSES)[number];
 
-export type LeadStatus = KanbanStatus | "New" | "Qualified";
+export type LeadStatus = KanbanStatus | "New" | "Qualified" | "Converted";
 
 export type Priority = "High" | "Medium" | "Low";
 
@@ -41,4 +41,18 @@ export interface ClientRecord {
   setupFee: number | null;
   monthlyRetainer: number | null;
   status: ClientStatus | null;
+}
+
+export type ScrapeRunStatus = "Running" | "Completed" | "Failed";
+
+export interface ScrapeHistoryRecord {
+  id: string;
+  runId: string;
+  date: string;
+  city: string;
+  niche: string;
+  limit: number;
+  status: ScrapeRunStatus | null;
+  leadsFound: number;
+  triggeredBy: string;
 }

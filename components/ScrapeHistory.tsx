@@ -1,0 +1,81 @@
+import type { ScrapeHistoryRecord } from "@/lib/types";
+
+const STATUS_LABELS: Record<string, string> = {
+  Running: "🟡 פועל",
+  Completed: "🟢 הושלם",
+  Failed: "🔴 נכשל",
+};
+
+function formatDate(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
+
+export default function ScrapeHistory({ runs }: { runs: ScrapeHistoryRecord[] }) {
+  if (runs.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border bg-surface/60 px-6 py-12 text-center">
+        <p className="text-sm text-muted">עדיין לא בוצעו סריקות.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="overflow-x-auto rounded-2xl border border-border bg-surface shadow-sm">
+      <table className="w-full text-start">
+        <thead>
+          <tr className="border-b border-border bg-background/60">
+            <th className="px-4 py-3 text-start text-xs font-bold uppercase tracking-wide text-muted">
+              תאריך
+            </th>
+            <th className="px-4 py-3 text-start text-xs font-bold uppercase tracking-wide text-muted">
+              ניישה
+            </th>
+            <th className="px-4 py-3 text-start text-xs font-bold uppercase tracking-wide text-muted">
+              עיר
+            </th>
+            <th className="px-4 py-3 text-start text-xs font-bold uppercase tracking-wide text-muted">
+              תוצאות
+            </th>
+            <th className="px-4 py-3 text-start text-xs font-bold uppercase tracking-wide text-muted">
+              סטטוס
+            </th>
+            <th className="px-4 py-3 text-start text-xs font-bold uppercase tracking-wide text-muted">
+              לידים שנוצרו
+            </th>
+            <th className="px-4 py-3 text-start text-xs font-bold uppercase tracking-wide text-muted">
+              הופעל על ידי
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          {runs.map((run) => (
+            <tr key={run.id} className="transition-colors hover:bg-background/60">
+              <td className="px-4 py-3 text-sm tabular-nums text-foreground/80">
+                {formatDate(run.date)}
+              </td>
+              <td className="px-4 py-3 text-sm font-bold text-foreground">{run.niche}</td>
+              <td className="px-4 py-3 text-sm text-foreground/80">{run.city}</td>
+              <td className="px-4 py-3 text-sm tabular-nums text-foreground/80">{run.limit}</td>
+              <td className="px-4 py-3 text-sm">
+                {run.status ? STATUS_LABELS[run.status] ?? run.status : "—"}
+              </td>
+              <td className="px-4 py-3 text-sm tabular-nums font-bold text-accent-strong">
+                {run.leadsFound}
+              </td>
+              <td className="px-4 py-3 text-sm text-foreground/80">{run.triggeredBy}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
