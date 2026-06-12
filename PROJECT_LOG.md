@@ -5,6 +5,34 @@ Each entry: what was done, decisions made, next steps.
 
 ---
 
+## 2026-06-12 — Deduplication added to the Make scenario
+
+**Done:**
+- Itay reviewed the first 10 leads — they "seem pretty good."
+- Added a deduplication step to the "Integration Apify" Make scenario (id `6151519`), addressing the known gap from earlier today.
+- New scenario structure (5 modules): Module 1 (Apify webhook trigger) → Module 2 (`apify:fetchDatasetItems`) → Module 3 (**Router**) with two routes:
+  - Route A: Module 4 — `airtable:searchRecordsAdvanced`, searches the Lead Tracker table for a record where Phone Number matches the scraped phone (formula `AND("{{2.phone}}"!="", {Phone Number}="{{2.phone}}")`, max 1 result).
+  - Route B: Module 5 — `airtable:CreateRecordAdvanced` (the original create-record module), now with a filter "No existing lead with this phone number" (`{{4.id}}` not exist) — only creates a new Lead Tracker record if the search in Route A found nothing.
+- Applied the updated blueprint via `scenarios_update` — validated successfully (`isinvalid: false`).
+- **Tested dedup**: re-ran the scenario manually against the original test dataset (`NTKd6IWpLgYkgCMF0`, the same 10 barbershops from this morning's run, all already in Airtable). Result: **0 new records created** — Airtable record count stayed at 25. Dedup works as intended.
+- Updated `pipeline/README.md` (Step 4 dedup checkbox now checked, "Known gap" note removed) and memory (`o-i-business-context.md`) with the new 5-module scenario structure.
+
+**Decisions:**
+- Dedup keys on **Phone Number** (exact match against the scraped `phone` field), not business name — phone numbers are more reliable/unique for Israeli local businesses than names (which often have multi-language variants).
+- Used a Make Router + cross-route filter reference (search result feeds a filter on the create module) rather than a separate "upsert" module, since Airtable's Make module for upsert requires a record ID, not a search-by-field key.
+
+**Open items (carried over):**
+- Empty duplicate repo `O-I-AI-soultions/O-I` still needs manual deletion via github.com (gh token lacks `delete_repo` scope).
+- The dedup path for genuinely *new* leads (i.e., when no match is found and the filter should let Route B create a record) wasn't separately tested with a live new business — only the "duplicate found → skip" path was directly verified. Worth double-checking on the next real scrape that new leads still get created.
+- "First leads reviewed and contacted" — review done, outreach still open.
+
+**Next steps:**
+- Run a fresh scrape (new niche/city, or the same one after some time) and confirm both that new businesses get added AND repeats are skipped.
+- Start outreach to the first 10 leads.
+- Note: 15 pre-existing empty records (no field values) remain in the Lead Tracker table from earlier testing — consider cleaning those up.
+
+---
+
 ## 2026-06-12 — Pipeline wired up: Apify → Make → Airtable
 
 **Done:**

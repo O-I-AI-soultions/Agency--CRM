@@ -25,8 +25,8 @@ Update these checkboxes as steps complete (see session log rule in [CLAUDE.md](.
 - [x] Module 2: `apify:fetchDatasetItems` (clean/JSON, limit 100) — returns one bundle per place automatically
 
 ### Step 4 — Airtable (the CRM)
-- [x] Make output mapped to Airtable columns — Module 3: `airtable:CreateRecordAdvanced` → Lead Tracker, mapping title→Business Name, phone→Phone Number, city→City, totalScore→Google Rating, website→Website URL, url→Google Maps Link, Lead Source="Apify Google Maps"
-- [ ] Deduplication handled (don't re-add same business) — not yet implemented; currently every scrape run will create new records even for repeat businesses
+- [x] Make output mapped to Airtable columns — mapping title→Business Name, phone→Phone Number, city→City, totalScore→Google Rating, website→Website URL, url→Google Maps Link, Lead Source="Apify Google Maps"
+- [x] Deduplication handled — Module 3 is a **Router** with two routes: Route A (Module 4, `airtable:searchRecordsAdvanced`) searches Lead Tracker for an existing record where Phone Number matches `{{2.phone}}`; Route B (Module 5, `airtable:CreateRecordAdvanced`) has a filter "No existing lead with this phone number" (`{{4.id}}` not exist) and only creates the record if no match was found. Tested by re-running the scenario against the original 10-item dataset — 0 new records created.
 
 ### Step 5 — Test & action
 - [x] Test scrape ran end-to-end (Apify run `7HnJnZcKQF7brHYez`, barbers in Kfar Saba & Hod HaSharon, 5 places per search, no-website filter)
@@ -37,5 +37,4 @@ Update these checkboxes as steps complete (see session log rule in [CLAUDE.md](.
 
 - Claude sessions have direct MCP connectors for **Apify**, **Make**, and **Airtable** — much of this can be built/verified from inside a Claude session.
 - `config/` will hold scraper input configs and field mappings as they stabilize.
-- **Known gap:** no deduplication yet. Before running repeated/larger scrapes, add a search step in the Make scenario (e.g. Airtable "Search Records" by phone number) with a router to skip existing leads.
 - Connections in Make: Airtable OAuth connection `8150090` ("O-I"), Apify API token connection `8149711` ("O-I Apify API Token connection").
