@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "/leads", label: "ניהול לידים" },
+  { href: "/call-list", label: "רשימת שיחות" },
   { href: "/clients", label: "לקוחות משלמים" },
 ];
 

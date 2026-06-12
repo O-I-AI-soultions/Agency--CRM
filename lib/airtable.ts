@@ -42,6 +42,7 @@ function mapLeadRecord(record: Airtable.Record<Airtable.FieldSet>): LeadRecord {
     priority: (fields["Priority"] as LeadRecord["priority"]) ?? null,
     assignedTo: assignedTo?.name ?? null,
     followUpCount: (fields["Follow-up Count"] as number) ?? null,
+    createdTime: record._rawJson.createdTime,
   };
 }
 

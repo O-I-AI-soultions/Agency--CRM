@@ -27,6 +27,7 @@ export interface LeadRecord {
   priority: Priority | null;
   assignedTo: string | null;
   followUpCount: number | null;
+  createdTime: string;
 }
 
 export type ClientStatus = "Active" | "Inactive";

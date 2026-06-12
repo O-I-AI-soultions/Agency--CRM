@@ -1,16 +1,23 @@
-import type { LeadRecord } from "@/lib/types";
+import type { LeadRecord, Priority } from "@/lib/types";
 import StatusActionButtons from "@/components/StatusActionButtons";
+import { computePriority } from "@/lib/priority";
 
-const PRIORITY_LABELS: Record<NonNullable<LeadRecord["priority"]>, string> = {
+const PRIORITY_LABELS: Record<Priority, string> = {
   High: "גבוהה",
   Medium: "בינונית",
   Low: "נמוכה",
 };
 
-const PRIORITY_CLASSES: Record<NonNullable<LeadRecord["priority"]>, string> = {
+const PRIORITY_CLASSES: Record<Priority, string> = {
   High: "bg-warn-soft text-warn",
   Medium: "bg-amber-soft text-amber",
   Low: "bg-accent-soft text-accent-strong",
+};
+
+const PRIORITY_ICONS: Record<Priority, string> = {
+  High: "🔥",
+  Medium: "●",
+  Low: "↓",
 };
 
 function getHostname(url: string): string {
@@ -74,17 +81,17 @@ interface LeadCardProps {
 }
 
 export default function LeadCard({ lead }: LeadCardProps) {
+  const { level } = computePriority(lead);
+
   return (
     <div className="space-y-2 rounded-xl border border-border bg-surface p-3 shadow-sm transition-shadow hover:shadow-md">
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-sm font-bold leading-snug text-foreground">{lead.businessName}</h3>
-        {lead.priority && (
-          <span
-            className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${PRIORITY_CLASSES[lead.priority]}`}
-          >
-            {PRIORITY_LABELS[lead.priority]}
-          </span>
-        )}
+        <span
+          className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${PRIORITY_CLASSES[level]}`}
+        >
+          {PRIORITY_ICONS[level]} {PRIORITY_LABELS[level]}
+        </span>
       </div>
 
       {(lead.city || lead.googleRating != null) && (
