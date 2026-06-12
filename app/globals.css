@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f6f4f0;
+  --foreground: #211d18;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: #ffffff;
+  --color-muted: #8c8478;
+  --color-border: #e7e1d6;
+
+  --color-accent: #0f6e5c;
+  --color-accent-strong: #0a5444;
+  --color-accent-soft: #e2efe9;
+
+  --color-warn: #b14e29;
+  --color-warn-soft: #f7e8df;
+
+  --color-amber: #b9821c;
+  --color-amber-soft: #f7eed9;
+
+  --color-sky: #2f6f9e;
+  --color-sky-soft: #e3eef4;
+
+  --font-sans: var(--font-rubik);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Slim horizontal scrollbar for the Kanban board on narrow viewports */
+.kanban-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.kanban-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.kanban-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 9999px;
+}

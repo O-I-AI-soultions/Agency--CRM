@@ -1,0 +1,50 @@
+import type { ClientRecord } from "@/lib/types";
+import StatusToggle from "@/components/StatusToggle";
+
+function formatCurrency(value: number | null): string {
+  if (value === null) return "—";
+  return `₪${value.toLocaleString("he-IL")}`;
+}
+
+export default function ClientsTable({ clients }: { clients: ClientRecord[] }) {
+  return (
+    <div className="overflow-x-auto rounded-2xl border border-border bg-surface shadow-sm">
+      <table className="w-full text-start">
+        <thead>
+          <tr className="border-b border-border bg-background/60">
+            <th className="px-4 py-3 text-start text-xs font-bold uppercase tracking-wide text-muted">
+              שם לקוח
+            </th>
+            <th className="px-4 py-3 text-start text-xs font-bold uppercase tracking-wide text-muted">
+              עלות הקמה
+            </th>
+            <th className="px-4 py-3 text-start text-xs font-bold uppercase tracking-wide text-muted">
+              תשלום חודשי
+            </th>
+            <th className="px-4 py-3 text-start text-xs font-bold uppercase tracking-wide text-muted">
+              סטטוס
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          {clients.map((client) => (
+            <tr key={client.id} className="transition-colors hover:bg-background/60">
+              <td className="px-4 py-3 text-sm font-bold text-foreground">
+                {client.clientName}
+              </td>
+              <td className="px-4 py-3 text-sm tabular-nums text-foreground/80">
+                {formatCurrency(client.setupFee)}
+              </td>
+              <td className="px-4 py-3 text-sm tabular-nums text-foreground/80">
+                {formatCurrency(client.monthlyRetainer)}
+              </td>
+              <td className="px-4 py-3 text-sm">
+                <StatusToggle clientId={client.id} currentStatus={client.status} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}

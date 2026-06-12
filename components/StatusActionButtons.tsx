@@ -1,0 +1,128 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import type { KanbanStatus, LeadStatus } from "@/lib/types";
+
+interface StatusActionButtonsProps {
+  leadId: string;
+  currentStatus: LeadStatus | null;
+}
+
+export default function StatusActionButtons({ leadId, currentStatus }: StatusActionButtonsProps) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const updateStatus = async (status: KanbanStatus) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`/api/leads/${leadId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
+
+      router.refresh();
+    } catch {
+      setError("שגיאה בעדכון");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const primaryClasses =
+    "rounded-full px-3 py-1 text-xs font-bold bg-accent text-white hover:bg-accent-strong disabled:opacity-50 transition-colors";
+  const outlineGrayClasses =
+    "rounded-full px-3 py-1 text-xs font-bold border border-warn/30 text-warn hover:bg-warn-soft disabled:opacity-50 transition-colors";
+  const outlineBlueClasses =
+    "rounded-full px-3 py-1 text-xs font-bold border border-accent/30 text-accent hover:bg-accent-soft disabled:opacity-50 transition-colors";
+
+  let buttons: React.ReactNode;
+
+  if (
+    currentStatus === "New Lead" ||
+    currentStatus === "New" ||
+    currentStatus === "Qualified" ||
+    currentStatus === null
+  ) {
+    buttons = (
+      <>
+        <button
+          type="button"
+          className={primaryClasses}
+          disabled={isLoading}
+          onClick={() => updateStatus("Contacted")}
+        >
+          סומן כ&apos;נוצר קשר&apos;
+        </button>
+        <button
+          type="button"
+          className={outlineGrayClasses}
+          disabled={isLoading}
+          onClick={() => updateStatus("Not Interested")}
+        >
+          לא מעוניין
+        </button>
+      </>
+    );
+  } else if (currentStatus === "Contacted") {
+    buttons = (
+      <>
+        <button
+          type="button"
+          className={primaryClasses}
+          disabled={isLoading}
+          onClick={() => updateStatus("Pitch Sent")}
+        >
+          נשלחה הצעה
+        </button>
+        <button
+          type="button"
+          className={outlineGrayClasses}
+          disabled={isLoading}
+          onClick={() => updateStatus("Not Interested")}
+        >
+          לא מעוניין
+        </button>
+      </>
+    );
+  } else if (currentStatus === "Pitch Sent") {
+    buttons = (
+      <button
+        type="button"
+        className={outlineGrayClasses}
+        disabled={isLoading}
+        onClick={() => updateStatus("Not Interested")}
+      >
+        לא מעוניין
+      </button>
+    );
+  } else if (currentStatus === "Not Interested") {
+    buttons = (
+      <button
+        type="button"
+        className={outlineBlueClasses}
+        disabled={isLoading}
+        onClick={() => updateStatus("New Lead")}
+      >
+        החזר לטיפול
+      </button>
+    );
+  } else {
+    buttons = null;
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2 pt-1">
+      {buttons}
+      {error && <span className="text-xs text-red-600">{error}</span>}
+    </div>
+  );
+}
