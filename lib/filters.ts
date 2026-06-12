@@ -34,8 +34,12 @@ export function applyFilters(leads: LeadRecord[], filters: Filters): LeadRecord[
     ) {
       return false;
     }
-    if (filters.city && lead.city !== filters.city) return false;
-    if (filters.niche && lead.niche?.toLowerCase() !== filters.niche.toLowerCase()) return false;
+    if (filters.city && !lead.city?.toLowerCase().includes(filters.city.toLowerCase())) {
+      return false;
+    }
+    if (filters.niche && !lead.niche?.toLowerCase().includes(filters.niche.toLowerCase())) {
+      return false;
+    }
     if (filters.status && lead.status !== filters.status) return false;
     if (filters.minRating && (lead.googleRating ?? 0) < filters.minRating) return false;
     return true;

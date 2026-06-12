@@ -55,30 +55,32 @@ export default function FilterBar({
           placeholder="חיפוש שם עסק..."
           className="min-w-[180px] flex-1 rounded-full border border-border bg-surface px-4 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40"
         />
-        <select
+        <input
+          type="text"
+          list="city-options"
           value={filters.city}
           onChange={(e) => onChange({ ...filters, city: e.target.value })}
-          className={selectClasses}
-        >
-          <option value="">כל הערים</option>
+          placeholder="עיר"
+          className="min-w-[120px] rounded-full border border-border bg-surface px-4 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40"
+        />
+        <datalist id="city-options">
           {cities.map((city) => (
-            <option key={city} value={city}>
-              {city}
-            </option>
+            <option key={city} value={city} />
           ))}
-        </select>
-        <select
+        </datalist>
+        <input
+          type="text"
+          list="niche-options"
           value={filters.niche}
           onChange={(e) => onChange({ ...filters, niche: e.target.value })}
-          className={selectClasses}
-        >
-          <option value="">כל הניישות</option>
+          placeholder="ניישה"
+          className="min-w-[120px] rounded-full border border-border bg-surface px-4 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40"
+        />
+        <datalist id="niche-options">
           {niches.map((niche) => (
-            <option key={niche} value={niche}>
-              {niche}
-            </option>
+            <option key={niche} value={niche} />
           ))}
-        </select>
+        </datalist>
         <select
           value={filters.status}
           onChange={(e) => onChange({ ...filters, status: e.target.value })}
