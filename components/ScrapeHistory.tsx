@@ -1,9 +1,22 @@
+import { Loader2, CheckCircle2, XCircle } from "lucide-react";
 import type { ScrapeHistoryRecord } from "@/lib/types";
 
 const STATUS_LABELS: Record<string, string> = {
-  Running: "🟡 פועל",
-  Completed: "🟢 הושלם",
-  Failed: "🔴 נכשל",
+  Running: "פועל",
+  Completed: "הושלם",
+  Failed: "נכשל",
+};
+
+const STATUS_ICONS: Record<string, typeof Loader2> = {
+  Running: Loader2,
+  Completed: CheckCircle2,
+  Failed: XCircle,
+};
+
+const STATUS_CLASSES: Record<string, string> = {
+  Running: "text-amber",
+  Completed: "text-accent-strong",
+  Failed: "text-warn",
 };
 
 function formatDate(value: string): string {
@@ -66,7 +79,20 @@ export default function ScrapeHistory({ runs }: { runs: ScrapeHistoryRecord[] })
               <td className="px-4 py-3 text-sm text-foreground/80">{run.city}</td>
               <td className="px-4 py-3 text-sm tabular-nums text-foreground/80">{run.limit}</td>
               <td className="px-4 py-3 text-sm">
-                {run.status ? STATUS_LABELS[run.status] ?? run.status : "—"}
+                {run.status ? (
+                  <span
+                    className={`inline-flex items-center gap-1 font-semibold ${STATUS_CLASSES[run.status] ?? ""}`}
+                  >
+                    {STATUS_ICONS[run.status] &&
+                      (() => {
+                        const Icon = STATUS_ICONS[run.status];
+                        return <Icon size={14} className={run.status === "Running" ? "animate-spin" : ""} />;
+                      })()}
+                    {STATUS_LABELS[run.status] ?? run.status}
+                  </span>
+                ) : (
+                  "—"
+                )}
               </td>
               <td className="px-4 py-3 text-sm tabular-nums font-bold text-accent-strong">
                 {run.leadsFound}

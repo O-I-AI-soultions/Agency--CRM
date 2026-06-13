@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Flame, Circle, ArrowDown, Star, Phone, MessageCircle, Check } from "lucide-react";
 import type { LeadRecord, Priority } from "@/lib/types";
 import type { Partner } from "@/lib/auth";
 import { toWhatsAppNumber, buildWhatsAppMessage } from "@/lib/whatsapp";
@@ -17,10 +18,10 @@ const PRIORITY_CLASSES: Record<Priority, string> = {
   Low: "bg-accent-soft text-accent-strong",
 };
 
-const PRIORITY_ICONS: Record<Priority, string> = {
-  High: "🔥",
-  Medium: "●",
-  Low: "↓",
+const PRIORITY_ICONS: Record<Priority, typeof Flame> = {
+  High: Flame,
+  Medium: Circle,
+  Low: ArrowDown,
 };
 
 interface CallListItem {
@@ -63,6 +64,11 @@ export default function CallListTable({
 
   const visibleItems = items.filter(({ lead }) => !hiddenIds.has(lead.id));
 
+  function PriorityIcon({ level }: { level: Priority }) {
+    const Icon = PRIORITY_ICONS[level];
+    return <Icon size={12} />;
+  }
+
   return (
     <div className="overflow-x-auto rounded-2xl border border-border bg-surface shadow-sm">
       <table className="w-full text-start">
@@ -95,13 +101,19 @@ export default function CallListTable({
               <td className="px-4 py-3 text-sm font-bold text-foreground">{lead.businessName}</td>
               <td className="px-4 py-3 text-sm text-foreground/80">{lead.city ?? "—"}</td>
               <td className="px-4 py-3 text-sm tabular-nums text-amber">
-                {lead.googleRating != null ? `★ ${lead.googleRating}` : "—"}
+                {lead.googleRating != null ? (
+                  <span className="inline-flex items-center gap-1">
+                    <Star size={12} className="fill-current" /> {lead.googleRating}
+                  </span>
+                ) : (
+                  "—"
+                )}
               </td>
               <td className="px-4 py-3 text-sm">
                 <span
-                  className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${PRIORITY_CLASSES[level]}`}
+                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold ${PRIORITY_CLASSES[level]}`}
                 >
-                  {PRIORITY_ICONS[level]} {PRIORITY_LABELS[level]}
+                  <PriorityIcon level={level} /> {PRIORITY_LABELS[level]}
                 </span>
               </td>
               <td className="px-4 py-3 text-sm">
@@ -109,9 +121,9 @@ export default function CallListTable({
                   {lead.phoneNumber && (
                     <a
                       href={`tel:${lead.phoneNumber}`}
-                      className="rounded-full border border-accent/30 px-3 py-1 text-xs font-bold text-accent transition-colors hover:bg-accent-soft"
+                      className="inline-flex items-center gap-1 rounded-full border border-accent/30 px-3 py-1 text-xs font-bold text-accent transition-colors hover:bg-accent-soft"
                     >
-                      📞 חייג
+                      <Phone size={12} /> חייג
                     </a>
                   )}
                   {lead.phoneNumber && (
@@ -119,18 +131,18 @@ export default function CallListTable({
                       href={`https://wa.me/${toWhatsAppNumber(lead.phoneNumber)}?text=${buildWhatsAppMessage(partner)}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-full border border-accent/30 px-3 py-1 text-xs font-bold text-accent transition-colors hover:bg-accent-soft"
+                      className="inline-flex items-center gap-1 rounded-full border border-accent/30 px-3 py-1 text-xs font-bold text-accent transition-colors hover:bg-accent-soft"
                     >
-                      💬 וואטסאפ
+                      <MessageCircle size={12} /> וואטסאפ
                     </a>
                   )}
                   <button
                     type="button"
                     disabled={loadingIds.has(lead.id)}
                     onClick={() => markContacted(lead.id)}
-                    className="rounded-full bg-accent px-3 py-1 text-xs font-bold text-white transition-colors hover:bg-accent-strong disabled:opacity-50"
+                    className="inline-flex items-center gap-1 rounded-full bg-accent px-3 py-1 text-xs font-bold text-white transition-colors hover:bg-accent-strong disabled:opacity-50"
                   >
-                    ✓ סומן כ&apos;צור קשר&apos;
+                    <Check size={12} /> סומן כ&apos;צור קשר&apos;
                   </button>
                 </div>
               </td>

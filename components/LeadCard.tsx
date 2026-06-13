@@ -1,3 +1,4 @@
+import { Phone, Globe, MapPin, Star } from "lucide-react";
 import type { LeadRecord } from "@/lib/types";
 import StatusActionButtons from "@/components/StatusActionButtons";
 import PriorityBadge from "@/components/PriorityBadge";
@@ -8,54 +9,6 @@ function getHostname(url: string): string {
   } catch {
     return url;
   }
-}
-
-function PhoneIcon() {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4" aria-hidden>
-      <path
-        d="M5.5 3h2.2l1 3.2-1.6 1.4a8 8 0 0 0 4.3 4.3l1.4-1.6 3.2 1v2.2c0 .8-.7 1.5-1.5 1.4-6-.5-10.8-5.3-11.3-11.3C3 3.7 3.7 3 4.5 3h1Z"
-        stroke="currentColor"
-        strokeWidth="1.4"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function GlobeIcon() {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4" aria-hidden>
-      <circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.4" />
-      <path
-        d="M3 10h14M10 3c1.8 1.9 2.8 4.4 2.8 7s-1 5.1-2.8 7c-1.8-1.9-2.8-4.4-2.8-7s1-5.1 2.8-7Z"
-        stroke="currentColor"
-        strokeWidth="1.4"
-      />
-    </svg>
-  );
-}
-
-function PinIcon() {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4" aria-hidden>
-      <path
-        d="M10 17.5s5.5-4.4 5.5-8.5a5.5 5.5 0 1 0-11 0c0 4.1 5.5 8.5 5.5 8.5Z"
-        stroke="currentColor"
-        strokeWidth="1.4"
-        strokeLinejoin="round"
-      />
-      <circle cx="10" cy="9" r="1.8" stroke="currentColor" strokeWidth="1.4" />
-    </svg>
-  );
-}
-
-function StarIcon() {
-  return (
-    <svg viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5" aria-hidden>
-      <path d="M10 1.8 12.4 7l5.6.6-4.2 3.8 1.2 5.6L10 14.1l-5 2.9 1.2-5.6L2 7.6 7.6 7 10 1.8Z" />
-    </svg>
-  );
 }
 
 interface LeadCardProps {
@@ -80,7 +33,7 @@ export default function LeadCard({ lead, onSelect }: LeadCardProps) {
           {lead.city && lead.googleRating != null && <span aria-hidden>·</span>}
           {lead.googleRating != null && (
             <span className="flex items-center gap-1 font-semibold text-amber">
-              <StarIcon /> {lead.googleRating}
+              <Star size={14} className="fill-current" /> {lead.googleRating}
             </span>
           )}
         </div>
@@ -99,7 +52,7 @@ export default function LeadCard({ lead, onSelect }: LeadCardProps) {
               className="flex items-center gap-1 rounded-full bg-background px-2 py-1 text-xs font-medium text-foreground transition-colors hover:bg-accent-soft hover:text-accent-strong"
               title="טלפון"
             >
-              <PhoneIcon />
+              <Phone size={16} />
               <span dir="ltr">{lead.phoneNumber}</span>
             </a>
           )}
@@ -112,7 +65,7 @@ export default function LeadCard({ lead, onSelect }: LeadCardProps) {
               className="flex items-center gap-1 rounded-full bg-background px-2 py-1 text-xs font-medium text-foreground transition-colors hover:bg-accent-soft hover:text-accent-strong"
               title="אתר"
             >
-              <GlobeIcon />
+              <Globe size={16} />
               <span dir="ltr">{getHostname(lead.websiteUrl)}</span>
             </a>
           )}
@@ -125,7 +78,7 @@ export default function LeadCard({ lead, onSelect }: LeadCardProps) {
               className="flex items-center gap-1 rounded-full bg-background px-2 py-1 text-xs font-medium text-foreground transition-colors hover:bg-accent-soft hover:text-accent-strong"
               title="מפה"
             >
-              <PinIcon />
+              <MapPin size={16} />
               מפה
             </a>
           )}

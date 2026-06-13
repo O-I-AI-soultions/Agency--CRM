@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ClipboardList, Users, X } from "lucide-react";
 import type { LinkableRecord } from "@/lib/types";
 
 interface LinkedRecordSearchProps {
@@ -20,10 +21,11 @@ export default function LinkedRecordSearch({
   const [open, setOpen] = useState(false);
 
   if (value) {
+    const ValueIcon = value.type === "lead" ? ClipboardList : Users;
     return (
       <div className="flex items-center justify-between gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm">
-        <span className="font-medium text-foreground">
-          {value.type === "lead" ? "📋" : "👥"} {value.name}
+        <span className="inline-flex items-center gap-1 font-medium text-foreground">
+          <ValueIcon size={14} /> {value.name}
         </span>
         {!disabled && (
           <button
@@ -32,7 +34,7 @@ export default function LinkedRecordSearch({
             aria-label="הסר קישור"
             className="text-muted transition-colors hover:text-warn"
           >
-            ✕
+            <X size={14} />
           </button>
         )}
       </div>
@@ -58,21 +60,24 @@ export default function LinkedRecordSearch({
       />
       {open && filtered.length > 0 && (
         <ul className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-border bg-surface shadow-md">
-          {filtered.map((r) => (
-            <li key={`${r.type}-${r.id}`}>
-              <button
-                type="button"
-                onClick={() => {
-                  onChange(r);
-                  setQuery("");
-                  setOpen(false);
-                }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-right text-sm text-foreground transition-colors hover:bg-background"
-              >
-                {r.type === "lead" ? "📋" : "👥"} {r.name}
-              </button>
-            </li>
-          ))}
+          {filtered.map((r) => {
+            const RecordIcon = r.type === "lead" ? ClipboardList : Users;
+            return (
+              <li key={`${r.type}-${r.id}`}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onChange(r);
+                    setQuery("");
+                    setOpen(false);
+                  }}
+                  className="flex w-full items-center gap-2 px-3 py-2 text-right text-sm text-foreground transition-colors hover:bg-background"
+                >
+                  <RecordIcon size={14} /> {r.name}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

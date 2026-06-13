@@ -1,3 +1,4 @@
+import { Flame, Circle, ArrowDown, ClipboardList, Users, MessageCircle } from "lucide-react";
 import type { Priority, TaskRecord, TaskStatus } from "@/lib/types";
 
 export const TASK_STATUS_LABELS: Record<TaskStatus, string> = {
@@ -12,10 +13,10 @@ export const PRIORITY_LABELS: Record<Priority, string> = {
   Low: "נמוכה",
 };
 
-const PRIORITY_ICONS: Record<Priority, string> = {
-  High: "🔴",
-  Medium: "🟡",
-  Low: "🔵",
+const PRIORITY_ICONS: Record<Priority, typeof Flame> = {
+  High: Flame,
+  Medium: Circle,
+  Low: ArrowDown,
 };
 
 const PRIORITY_CLASSES: Record<Priority, string> = {
@@ -52,11 +53,9 @@ interface TaskCardProps {
 
 export default function TaskCard({ task, onSelect }: TaskCardProps) {
   const overdue = isOverdue(task);
-  const linkedLabel = task.linkedLeadName
-    ? `📋 ${task.linkedLeadName}`
-    : task.linkedClientName
-      ? `👥 ${task.linkedClientName}`
-      : null;
+  const PriorityIcon = task.priority ? PRIORITY_ICONS[task.priority] : null;
+  const LinkedIcon = task.linkedLeadName ? ClipboardList : task.linkedClientName ? Users : null;
+  const linkedName = task.linkedLeadName ?? task.linkedClientName ?? null;
 
   return (
     <div
@@ -65,18 +64,18 @@ export default function TaskCard({ task, onSelect }: TaskCardProps) {
     >
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-sm font-bold leading-snug text-foreground">{task.title}</h3>
-        {task.priority && (
+        {task.priority && PriorityIcon && (
           <span
-            className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${PRIORITY_CLASSES[task.priority]}`}
+            className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold ${PRIORITY_CLASSES[task.priority]}`}
           >
-            {PRIORITY_ICONS[task.priority]} {PRIORITY_LABELS[task.priority]}
+            <PriorityIcon size={12} /> {PRIORITY_LABELS[task.priority]}
           </span>
         )}
       </div>
 
-      {linkedLabel && (
-        <span className="inline-flex items-center rounded-full bg-background px-2 py-0.5 text-xs font-medium text-muted">
-          {linkedLabel}
+      {LinkedIcon && linkedName && (
+        <span className="inline-flex items-center gap-1 rounded-full bg-background px-2 py-0.5 text-xs font-medium text-muted">
+          <LinkedIcon size={12} /> {linkedName}
         </span>
       )}
 
@@ -89,7 +88,11 @@ export default function TaskCard({ task, onSelect }: TaskCardProps) {
             {formatDate(task.dueDate)}
           </span>
         )}
-        {task.commentCount > 0 && <span className="text-muted">💬 {task.commentCount}</span>}
+        {task.commentCount > 0 && (
+          <span className="inline-flex items-center gap-1 text-muted">
+            <MessageCircle size={12} /> {task.commentCount}
+          </span>
+        )}
       </div>
     </div>
   );

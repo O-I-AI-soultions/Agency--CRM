@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { X } from "lucide-react";
 import { KANBAN_STATUSES, type KanbanStatus, type LeadRecord } from "@/lib/types";
 import {
   DEFAULT_FILTERS,
@@ -120,9 +121,9 @@ export default function FilterBar({
             type="button"
             onClick={() => onChange(DEFAULT_FILTERS)}
             suppressHydrationWarning
-            className="rounded-full border border-warn/30 px-3 py-2 text-sm font-bold text-warn transition-colors hover:bg-warn-soft"
+            className="inline-flex items-center gap-1 rounded-full border border-warn/30 px-3 py-2 text-sm font-bold text-warn transition-colors hover:bg-warn-soft"
           >
-            × נקה
+            <X size={14} /> נקה
           </button>
         )}
       </div>

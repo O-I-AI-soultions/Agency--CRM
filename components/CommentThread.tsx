@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MessageCircle } from "lucide-react";
 import type { TaskCommentRecord } from "@/lib/types";
 
 function formatDateTime(iso: string): string {
@@ -27,7 +28,9 @@ export default function CommentThread({ comments, onSend }: CommentThreadProps) 
 
   return (
     <section className="space-y-3 border-t border-border pt-4">
-      <h3 className="text-xs font-bold uppercase tracking-wide text-muted">💬 תגובות</h3>
+      <h3 className="flex items-center gap-1 text-xs font-bold uppercase tracking-wide text-muted">
+        <MessageCircle size={14} /> תגובות
+      </h3>
 
       <div className="space-y-2">
         {comments.length === 0 ? (

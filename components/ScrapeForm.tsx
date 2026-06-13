@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Search, Loader2, CheckCircle2, XCircle } from "lucide-react";
 
 type ScrapeStatus = "idle" | "running" | "succeeded" | "failed";
 
@@ -174,23 +175,23 @@ export default function ScrapeForm() {
           <div className="sm:col-span-3">
             <button
               type="submit"
-              className="rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-accent-strong"
+              className="inline-flex items-center gap-1.5 rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-accent-strong"
             >
-              🔍 הפעל סריקה
+              <Search size={16} /> הפעל סריקה
             </button>
           </div>
         </form>
       )}
 
       {status === "running" && (
-        <div className="mt-4 rounded-xl border border-amber/30 bg-amber-soft px-4 py-3 text-sm font-semibold text-amber">
-          ⏳ הסריקה פועלת... (עשויה לקחת 1-3 דקות)
+        <div className="mt-4 flex items-center gap-1.5 rounded-xl border border-amber/30 bg-amber-soft px-4 py-3 text-sm font-semibold text-amber">
+          <Loader2 size={16} className="animate-spin" /> הסריקה פועלת... (עשויה לקחת 1-3 דקות)
         </div>
       )}
 
       {status === "succeeded" && (
-        <div className="mt-4 rounded-xl border border-accent/30 bg-accent-soft px-4 py-3 text-sm font-semibold text-accent-strong">
-          ✅ הסריקה הושלמה — נוצרו {leadsFound ?? 0} לידים חדשים!
+        <div className="mt-4 flex items-center gap-1.5 rounded-xl border border-accent/30 bg-accent-soft px-4 py-3 text-sm font-semibold text-accent-strong">
+          <CheckCircle2 size={16} /> הסריקה הושלמה — נוצרו {leadsFound ?? 0} לידים חדשים!
           <button
             type="button"
             onClick={resetForm}
@@ -202,8 +203,8 @@ export default function ScrapeForm() {
       )}
 
       {status === "failed" && (
-        <div className="mt-4 rounded-xl border border-warn/30 bg-warn-soft px-4 py-3 text-sm font-semibold text-warn">
-          ❌ הסריקה נכשלה. נסה שוב.
+        <div className="mt-4 flex items-center gap-1.5 rounded-xl border border-warn/30 bg-warn-soft px-4 py-3 text-sm font-semibold text-warn">
+          <XCircle size={16} /> הסריקה נכשלה. נסה שוב.
           <button
             type="button"
             onClick={resetForm}

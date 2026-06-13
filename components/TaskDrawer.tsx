@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { X } from "lucide-react";
 import {
   PRIORITIES,
   TASK_STATUSES,
@@ -238,7 +239,7 @@ export default function TaskDrawer({
               aria-label="סגור"
               className="absolute left-4 top-4 flex h-8 w-8 items-center justify-center rounded-full text-muted transition-colors hover:bg-background hover:text-foreground"
             >
-              ✕
+              <X size={18} />
             </button>
 
             <div className="border-b border-border p-4 pl-14">

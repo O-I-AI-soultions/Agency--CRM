@@ -3,13 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LayoutDashboard, ClipboardList, CheckSquare, Users, Menu, User } from "lucide-react";
 import type { Partner } from "@/lib/auth";
 
 const NAV_ITEMS = [
-  { href: "/", icon: "🏠", label: "דשבורד" },
-  { href: "/leads", icon: "📋", label: "לידים" },
-  { href: "/tasks", icon: "✅", label: "משימות" },
-  { href: "/clients", icon: "👥", label: "לקוחות" },
+  { href: "/", icon: LayoutDashboard, label: "דשבורד" },
+  { href: "/leads", icon: ClipboardList, label: "לידים" },
+  { href: "/tasks", icon: CheckSquare, label: "משימות" },
+  { href: "/clients", icon: Users, label: "לקוחות" },
 ];
 
 interface SidebarProps {
@@ -34,9 +35,9 @@ export default function Sidebar({ partner }: SidebarProps) {
         type="button"
         onClick={() => setIsOpen(true)}
         aria-label="פתח תפריט"
-        className="fixed top-4 left-4 z-30 flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface text-lg text-foreground shadow-sm md:hidden"
+        className="fixed top-4 left-4 z-30 flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface text-foreground shadow-sm md:hidden"
       >
-        ☰
+        <Menu size={20} />
       </button>
 
       {isOpen && (
@@ -73,7 +74,7 @@ export default function Sidebar({ partner }: SidebarProps) {
                   : "text-muted hover:bg-background hover:text-foreground")
               }
             >
-              <span className="text-lg">{item.icon}</span>
+              <item.icon size={18} />
               {item.label}
             </Link>
           ))}
@@ -81,7 +82,7 @@ export default function Sidebar({ partner }: SidebarProps) {
 
         <div className="mt-auto border-t border-border pt-4">
           <p className="flex items-center gap-2 px-3 py-1.5 text-sm font-bold text-foreground">
-            <span className="text-lg">👤</span> {partner}
+            <User size={18} /> {partner}
           </p>
           <button
             type="button"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { X, Phone, MessageCircle, MapPin, Star, Check, PartyPopper } from "lucide-react";
 import { KANBAN_STATUSES, type KanbanStatus, type LeadRecord } from "@/lib/types";
 import type { Partner } from "@/lib/auth";
 import PriorityBadge from "@/components/PriorityBadge";
@@ -39,9 +40,11 @@ function formatDateTime(iso: string | null): string {
   return `${date} ${time}`;
 }
 
-function renderStars(rating: number): string {
+function renderStars(rating: number) {
   const filled = Math.max(0, Math.min(5, Math.round(rating)));
-  return "★".repeat(filled) + "☆".repeat(5 - filled);
+  return Array.from({ length: 5 }, (_, i) => (
+    <Star key={i} size={14} className={i < filled ? "fill-current" : "text-border"} />
+  ));
 }
 
 interface LeadDrawerProps {
@@ -51,11 +54,13 @@ interface LeadDrawerProps {
   onUpdate: (updated: LeadRecord) => void;
 }
 
+type ToastContent = { icon: typeof Check; text: string };
+
 export default function LeadDrawer({ lead, partner, onClose, onUpdate }: LeadDrawerProps) {
   const [localLead, setLocalLead] = useState<LeadRecord | null>(lead);
   const [notesValue, setNotesValue] = useState(lead?.notes ?? "");
   const [openLeadId, setOpenLeadId] = useState<string | null>(lead?.id ?? null);
-  const [toast, setToast] = useState<string | null>(null);
+  const [toast, setToast] = useState<ToastContent | null>(null);
   const [savingFooter, setSavingFooter] = useState(false);
   const [showConvertModal, setShowConvertModal] = useState(false);
   const [setupFee, setSetupFee] = useState("");
@@ -82,8 +87,8 @@ export default function LeadDrawer({ lead, partner, onClose, onUpdate }: LeadDra
     return () => window.removeEventListener("keydown", handleKey);
   }, [isOpen, onClose]);
 
-  function showToast(message: string) {
-    setToast(message);
+  function showToast(toast: ToastContent) {
+    setToast(toast);
     setTimeout(() => setToast(null), 2000);
   }
 
@@ -134,7 +139,7 @@ export default function LeadDrawer({ lead, partner, onClose, onUpdate }: LeadDra
     const updated = { ...localLead, notes: notesValue };
     setLocalLead(updated);
     onUpdate(updated);
-    showToast("נשמר ✓");
+    showToast({ icon: Check, text: "נשמר" });
   }
 
   async function handleMarkContacted() {
@@ -152,7 +157,7 @@ export default function LeadDrawer({ lead, partner, onClose, onUpdate }: LeadDra
       };
       setLocalLead(updated);
       onUpdate(updated);
-      showToast("✓ הליד עודכן");
+      showToast({ icon: Check, text: "הליד עודכן" });
     } finally {
       setSavingFooter(false);
     }
@@ -177,7 +182,7 @@ export default function LeadDrawer({ lead, partner, onClose, onUpdate }: LeadDra
       setLocalLead(updated);
       setShowConvertModal(false);
       onUpdate(updated);
-      showToast("🎉 לקוח חדש נוצר!");
+      showToast({ icon: PartyPopper, text: "לקוח חדש נוצר!" });
       setTimeout(() => onClose(), 600);
     } finally {
       setConvertSaving(false);
@@ -220,12 +225,12 @@ export default function LeadDrawer({ lead, partner, onClose, onUpdate }: LeadDra
               aria-label="סגור"
               className="absolute left-4 top-4 flex h-8 w-8 items-center justify-center rounded-full text-muted transition-colors hover:bg-background hover:text-foreground"
             >
-              ✕
+              <X size={18} />
             </button>
 
             {toast && (
-              <div className="pointer-events-none absolute top-4 right-1/2 z-10 translate-x-1/2 rounded-full bg-accent px-3 py-1 text-xs font-bold text-white shadow-md">
-                {toast}
+              <div className="pointer-events-none absolute top-4 right-1/2 z-10 flex translate-x-1/2 items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-bold text-white shadow-md">
+                <toast.icon size={14} /> {toast.text}
               </div>
             )}
 
@@ -238,7 +243,9 @@ export default function LeadDrawer({ lead, partner, onClose, onUpdate }: LeadDra
                 {localLead.city && <span className="text-sm text-muted">{localLead.city}</span>}
                 {localLead.googleRating != null && (
                   <span className="flex items-center gap-1 text-sm font-semibold text-amber">
-                    <span dir="ltr">{renderStars(localLead.googleRating)}</span>
+                    <span dir="ltr" className="flex items-center">
+                      {renderStars(localLead.googleRating)}
+                    </span>
                     {localLead.googleRating}
                   </span>
                 )}
@@ -253,10 +260,12 @@ export default function LeadDrawer({ lead, partner, onClose, onUpdate }: LeadDra
                 <div className="flex gap-2">
                   {localLead.phoneNumber ? (
                     <a href={`tel:${localLead.phoneNumber}`} className={pillClasses}>
-                      📞 חייג
+                      <Phone size={14} /> חייג
                     </a>
                   ) : (
-                    <span className={`${pillClasses} cursor-not-allowed opacity-50`}>📞 חייג</span>
+                    <span className={`${pillClasses} cursor-not-allowed opacity-50`}>
+                      <Phone size={14} /> חייג
+                    </span>
                   )}
                   {localLead.phoneNumber ? (
                     <a
@@ -265,10 +274,12 @@ export default function LeadDrawer({ lead, partner, onClose, onUpdate }: LeadDra
                       rel="noopener noreferrer"
                       className={pillClasses}
                     >
-                      💬 וואטסאפ
+                      <MessageCircle size={14} /> וואטסאפ
                     </a>
                   ) : (
-                    <span className={`${pillClasses} cursor-not-allowed opacity-50`}>💬 וואטסאפ</span>
+                    <span className={`${pillClasses} cursor-not-allowed opacity-50`}>
+                      <MessageCircle size={14} /> וואטסאפ
+                    </span>
                   )}
                   {localLead.googleMapsLink ? (
                     <a
@@ -277,10 +288,12 @@ export default function LeadDrawer({ lead, partner, onClose, onUpdate }: LeadDra
                       rel="noopener noreferrer"
                       className={pillClasses}
                     >
-                      📍 מפות
+                      <MapPin size={14} /> מפות
                     </a>
                   ) : (
-                    <span className={`${pillClasses} cursor-not-allowed opacity-50`}>📍 מפות</span>
+                    <span className={`${pillClasses} cursor-not-allowed opacity-50`}>
+                      <MapPin size={14} /> מפות
+                    </span>
                   )}
                 </div>
               </section>
@@ -411,9 +424,9 @@ export default function LeadDrawer({ lead, partner, onClose, onUpdate }: LeadDra
                 <button
                   type="button"
                   onClick={() => setShowConvertModal(true)}
-                  className="w-full rounded-full bg-accent px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-accent-strong"
+                  className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-accent-strong"
                 >
-                  ✓ המר ללקוח
+                  <Check size={16} /> המר ללקוח
                 </button>
               </div>
             )}
@@ -474,9 +487,9 @@ export default function LeadDrawer({ lead, partner, onClose, onUpdate }: LeadDra
                 type="button"
                 onClick={handleConvertConfirm}
                 disabled={convertSaving}
-                className="rounded-full bg-accent px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-accent-strong disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-accent-strong disabled:opacity-50"
               >
-                ✓ אשר
+                <Check size={16} /> אשר
               </button>
             </div>
           </div>
