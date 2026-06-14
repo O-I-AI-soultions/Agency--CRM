@@ -75,7 +75,7 @@ export default function UrgentLeadsCard({ leads: initialLeads, partner }: Urgent
 
   return (
     <>
-      <div className="card-shadow animate-fade-up rounded-2xl bg-surface p-5">
+      <div className="panel animate-fade-up p-5">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-lg font-bold text-foreground">הלידים הדחופים ביותר</h2>
           <Flame size={18} className="text-warn" />
@@ -84,7 +84,7 @@ export default function UrgentLeadsCard({ leads: initialLeads, partner }: Urgent
 
         <div className="mt-4 space-y-2.5">
           {topLeads.length === 0 ? (
-            <div className="flex items-center justify-center gap-1.5 rounded-xl border border-dashed border-border px-3 py-8 text-center text-sm text-muted">
+            <div className="flex items-center justify-center gap-1.5 rounded-lg border border-dashed border-border px-3 py-8 text-center text-sm text-muted">
               <PartyPopper size={16} /> כל הכבוד! אין לידים דחופים כרגע
             </div>
           ) : (

@@ -29,7 +29,7 @@ export default function NotesPanel({ initialContent }: NotesPanelProps) {
   }
 
   return (
-    <div className="card-shadow animate-fade-up rounded-2xl bg-surface p-5">
+    <div className="panel animate-fade-up p-5">
       <div className="flex items-center justify-between">
         <h2 className="font-display text-lg font-bold text-foreground">פתקים</h2>
         <NotebookPen size={18} className="text-muted-2" />
@@ -43,13 +43,13 @@ export default function NotesPanel({ initialContent }: NotesPanelProps) {
           onBlur={handleBlur}
           placeholder="כתוב הערה..."
           suppressHydrationWarning
-          className="min-h-[140px] w-full resize-y rounded-xl border border-border bg-background p-3 text-base text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40"
+          className="min-h-[140px] w-full resize-y rounded-lg border border-border bg-background p-3 text-base text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40"
         />
         {saved && (
           <div
             role="status"
             aria-live="polite"
-            className="pointer-events-none absolute bottom-3 left-3 flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-white shadow-md"
+            className="pointer-events-none absolute bottom-3 left-3 flex items-center gap-1 rounded-md bg-accent px-2.5 py-1 font-mono text-xs font-bold text-accent-foreground shadow-md"
           >
             <Check size={12} /> נשמר
           </div>

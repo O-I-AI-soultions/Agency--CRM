@@ -43,17 +43,15 @@ export default function SalesPerformanceCard({ leads, clients }: SalesPerformanc
 
   return (
     <div
-      className="card-shadow animate-fade-up rounded-2xl bg-surface p-5"
+      className="panel animate-fade-up p-5"
       style={{ animationDelay: "0.1s" }}
     >
       <div className="flex items-center justify-between">
         <h2 className="text-[13px] font-semibold text-muted">ביצועי מכירות</h2>
-        <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-[11px] font-semibold text-accent-strong">
-          החודש
-        </span>
+        <span className="tag tag-accent">החודש</span>
       </div>
 
-      <p className="mt-2 font-display text-[28px] font-bold text-foreground">
+      <p className="mt-2 font-mono text-2xl font-bold text-foreground">
         {formatCurrency(mrr)}
       </p>
       <p className="text-xs text-muted-2">הכנסה חודשית חזויה (MRR)</p>
@@ -62,22 +60,24 @@ export default function SalesPerformanceCard({ leads, clients }: SalesPerformanc
         {counts.map((count, i) => (
           <div key={i} className="flex flex-1 flex-col items-center gap-1.5">
             <div
-              className="w-full rounded-t-[6px]"
+              className="w-full rounded-t-[3px]"
               style={{
                 height: `${Math.max((count / maxCount) * 100, 6)}%`,
                 backgroundColor: i % 2 === 0 ? "var(--color-accent)" : "var(--color-green)",
               }}
             />
-            <span className="text-[10px] text-muted-2">{DAY_LABELS[i]}</span>
+            <span className="font-mono text-[10px] text-muted-2">{DAY_LABELS[i]}</span>
           </div>
         ))}
       </div>
 
       <div className="mt-3 flex items-center justify-between">
-        <span className="text-xs text-muted">{thisWeek} לידים חדשים השבוע</span>
+        <span className="text-xs text-muted">
+          <span className="font-mono">{thisWeek}</span> לידים חדשים השבוע
+        </span>
         <span
           className={
-            "rounded-md px-2 py-0.5 text-[13px] font-semibold " +
+            "rounded-md px-2 py-0.5 font-mono text-[13px] font-semibold " +
             (isPositive ? "bg-green-soft text-green" : "bg-warn-soft text-warn")
           }
         >

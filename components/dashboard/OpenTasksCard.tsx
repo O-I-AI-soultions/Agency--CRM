@@ -11,9 +11,9 @@ const PRIORITY_LABELS: Record<Priority, string> = {
 };
 
 const PRIORITY_CLASSES: Record<Priority, string> = {
-  High: "bg-warn-soft text-warn-strong",
-  Medium: "bg-amber-soft text-amber-strong",
-  Low: "bg-sky-soft text-sky",
+  High: "tag-warn",
+  Medium: "tag-amber",
+  Low: "tag-sky",
 };
 
 function formatDate(iso: string): string {
@@ -58,7 +58,7 @@ export default function OpenTasksCard({ tasks: initialTasks }: OpenTasksCardProp
 
   return (
     <div
-      className="card-shadow animate-fade-up rounded-2xl bg-surface p-5"
+      className="panel animate-fade-up p-5"
       style={{ animationDelay: "0.3s" }}
     >
       <div className="flex items-center justify-between">
@@ -85,14 +85,12 @@ export default function OpenTasksCard({ tasks: initialTasks }: OpenTasksCardProp
                 <p className="truncate text-sm text-foreground">{task.title}</p>
                 <div className="mt-1 flex items-center gap-2">
                   {task.dueDate && (
-                    <span className={`text-[11px] ${overdue ? "font-bold text-warn-strong" : "text-muted-2"}`}>
+                    <span className={`font-mono text-[11px] ${overdue ? "font-bold text-warn-strong" : "text-muted"}`}>
                       {formatDate(task.dueDate)}
                     </span>
                   )}
                   {task.priority && (
-                    <span
-                      className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${PRIORITY_CLASSES[task.priority]}`}
-                    >
+                    <span className={`tag ${PRIORITY_CLASSES[task.priority]}`}>
                       {PRIORITY_LABELS[task.priority]}
                     </span>
                   )}
