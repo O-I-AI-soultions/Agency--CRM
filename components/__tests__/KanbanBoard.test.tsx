@@ -160,33 +160,6 @@ describe("KanbanBoard drag-and-drop", () => {
     expect(newLeadDropzone?.textContent).toContain("Acme Co");
   });
 
-  it("is a no-op when dropped on the 'אחר' (other) column (no API call)", async () => {
-    (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true });
-
-    // A lead with a status outside KANBAN_STATUSES lands in the "Other"
-    // column. Use a status not in KANBAN_STATUSES to populate it.
-    const leads: LeadRecord[] = [
-      makeLead({ id: "lead-1", businessName: "Acme Co", status: "New Lead" }),
-      makeLead({ id: "lead-2", businessName: "Legacy Co", status: "Qualified" }),
-    ];
-
-    render(<KanbanBoard leads={leads} partner="איתי" />);
-
-    const card = screen.getByText("Acme Co").closest('[role="button"]');
-    const otherDropzone = document.querySelector('[data-column-status="other"]');
-    expect(otherDropzone).toBeTruthy();
-    document.elementFromPoint = vi.fn(() => otherDropzone as Element);
-
-    dragCard(card!, otherDropzone);
-
-    await new Promise((r) => setTimeout(r, 50));
-
-    expect(global.fetch).not.toHaveBeenCalled();
-    // The card stays in the "New Lead" column.
-    const newLeadDropzone = document.querySelector('[data-column-status="New Lead"]');
-    expect(newLeadDropzone?.textContent).toContain("Acme Co");
-  });
-
   it("opens the LeadDrawer on a plain click without dragging", async () => {
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true });
 

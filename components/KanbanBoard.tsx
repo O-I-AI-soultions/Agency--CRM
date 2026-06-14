@@ -169,13 +169,6 @@ export default function KanbanBoard({ leads: initialLeads, partner }: KanbanBoar
       accent: "proposal" as const,
       status: "Pitch Sent" as KanbanStatus,
     },
-    {
-      title: COLUMN_LABELS["Not Interested"],
-      leads: groups["Not Interested"],
-      accent: "lost" as const,
-      status: "Not Interested" as KanbanStatus,
-    },
-    { title: "אחר", leads: groups.Other, accent: "negotiation" as const, status: null },
   ];
 
   return (
@@ -197,7 +190,7 @@ export default function KanbanBoard({ leads: initialLeads, partner }: KanbanBoar
         </div>
       )}
       <div
-        className="kanban-scroll -mx-4 mt-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:grid lg:grid-cols-5 lg:gap-4 lg:overflow-visible lg:px-8"
+        className="kanban-scroll -mx-4 mt-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:px-8"
         style={{ touchAction: "pan-x" }}
       >
         {columns.map((column) => (
