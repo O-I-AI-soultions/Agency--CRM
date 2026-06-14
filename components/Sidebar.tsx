@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, ClipboardList, CheckSquare, Users, Menu, ChevronDown, Settings } from "lucide-react";
+import ThemeToggle from "@/components/ThemeToggle";
 import type { Partner } from "@/lib/auth";
 
 const NAV_ITEMS = [
@@ -13,8 +14,6 @@ const NAV_ITEMS = [
   { href: "/clients", icon: Users, label: "לקוחות" },
   { href: "/settings", icon: Settings, label: "הגדרות" },
 ];
-
-const LOGO_SQUARES = ["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"];
 
 interface SidebarProps {
   partner: Partner;
@@ -47,7 +46,7 @@ export default function Sidebar({ partner }: SidebarProps) {
         type="button"
         onClick={() => setIsOpen(true)}
         aria-label="פתח תפריט"
-        className="card-shadow fixed top-4 left-4 z-30 flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-surface text-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 md:hidden"
+        className="panel fixed top-4 left-4 z-30 flex h-11 w-11 items-center justify-center text-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 md:hidden"
       >
         <Menu size={20} />
       </button>
@@ -67,12 +66,10 @@ export default function Sidebar({ partner }: SidebarProps) {
         }
       >
         <div className="flex h-16 items-center gap-2.5 border-b border-sidebar-border px-5">
-          <div className="grid h-4 w-4 grid-cols-2 gap-[2px]">
-            {LOGO_SQUARES.map((color) => (
-              <span key={color} className="rounded-[2px]" style={{ backgroundColor: color }} />
-            ))}
-          </div>
-          <span className="font-display text-[17px] font-semibold text-white">O-I CRM</span>
+          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent font-mono text-xs font-bold text-accent-foreground">
+            O·I
+          </span>
+          <span className="font-mono text-[15px] font-semibold tracking-wide text-white">O·I CRM</span>
         </div>
 
         <nav className="flex flex-1 flex-col gap-1 px-3 py-4">
@@ -87,7 +84,7 @@ export default function Sidebar({ partner }: SidebarProps) {
                 className={
                   "group flex h-12 animate-fade-up items-center gap-3 rounded-[10px] px-4 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent/60 " +
                   (active
-                    ? "border-l-[3px] border-accent bg-sidebar-active text-white"
+                    ? "border-l-[3px] border-accent bg-accent-soft text-white"
                     : "text-white/55 hover:bg-sidebar-active hover:text-white")
                 }
                 style={{ animationDelay: `${index * 0.05}s` }}
@@ -104,22 +101,22 @@ export default function Sidebar({ partner }: SidebarProps) {
 
         <div className="border-t border-sidebar-border p-3">
           <div className="flex items-center gap-2.5 rounded-[10px] px-3 py-2.5">
-            <span
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full font-display text-xs font-semibold text-white"
-              style={{ background: "linear-gradient(135deg, #3B82F6, #8B5CF6)" }}
-            >
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-accent font-mono text-xs font-semibold text-accent-foreground">
               {partner.charAt(0)}
             </span>
             <span className="flex-1 text-xs font-medium text-white/70">{partner}</span>
             <ChevronDown size={14} className="text-white/40" />
           </div>
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="mt-1 w-full rounded-[10px] px-3 py-2 text-right text-sm font-medium text-white/55 transition-colors hover:bg-white/5 hover:text-warn focus:outline-none focus:ring-2 focus:ring-accent/60"
-          >
-            התנתק
-          </button>
+          <div className="mt-1 flex items-center gap-1">
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="flex-1 rounded-[10px] px-3 py-2 text-right text-sm font-medium text-white/55 transition-colors hover:bg-white/5 hover:text-warn focus:outline-none focus:ring-2 focus:ring-accent/60"
+            >
+              התנתק
+            </button>
+            <ThemeToggle className="shrink-0" />
+          </div>
         </div>
       </aside>
     </>

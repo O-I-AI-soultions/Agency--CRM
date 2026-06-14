@@ -45,18 +45,9 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-32 -right-32 h-80 w-80 rounded-full bg-accent-soft blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-40 -left-24 h-96 w-96 rounded-full bg-sky-soft blur-3xl"
-      />
-
-      <div className="relative w-full max-w-sm rounded-2xl border border-border bg-surface p-8 shadow-xl shadow-black/5">
+      <div className="panel relative w-full max-w-sm p-8">
         <div className="mb-6 flex flex-col items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-base font-black text-white">
+          <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent font-mono text-base font-black text-accent-foreground">
             O·I
           </span>
           <div className="text-center">
@@ -78,7 +69,7 @@ export default function LoginPage() {
                   onClick={() => setPartner(name)}
                   aria-pressed={partner === name}
                   className={
-                    "flex-1 rounded-xl border px-4 py-2.5 text-sm font-bold transition focus:outline-none focus:ring-2 focus:ring-accent/20 " +
+                    "flex-1 rounded-lg border px-4 py-2.5 text-sm font-bold transition focus:outline-none focus:ring-2 focus:ring-accent/20 " +
                     (partner === name
                       ? "border-accent bg-accent-soft text-accent"
                       : "border-border bg-background text-foreground hover:border-accent/40")
@@ -102,7 +93,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoFocus
-                className="w-full rounded-xl border border-border bg-background px-4 py-2.5 pl-11 text-foreground transition focus:border-accent focus:bg-surface focus:outline-none focus:ring-2 focus:ring-accent/20"
+                className="w-full rounded-lg border border-border bg-background px-4 py-2.5 pl-11 text-foreground transition focus:border-accent focus:bg-surface focus:outline-none focus:ring-2 focus:ring-accent/20"
               />
               <button
                 type="button"
@@ -129,7 +120,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-2 w-full rounded-xl bg-accent px-4 py-2.5 font-bold text-white transition hover:bg-accent-strong focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:cursor-not-allowed disabled:opacity-60"
+            className="btn-primary mt-2 w-full py-2.5 font-bold disabled:cursor-not-allowed"
           >
             {loading ? "מתחבר..." : "כניסה"}
           </button>
