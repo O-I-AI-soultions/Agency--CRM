@@ -78,6 +78,8 @@ export default function ScrapeForm() {
       });
 
       if (!startRes.ok) {
+        const body = await startRes.json().catch(() => null);
+        setError(body?.error ?? "הסריקה נכשלה. נסה שוב.");
         setStatus("failed");
         return;
       }

@@ -18,15 +18,20 @@ vi.mock("next/navigation", () => ({
 // jsdom does not implement the Pointer Events capture API used by
 // LeadCard's drag-and-drop handlers, nor `document.elementFromPoint`.
 // Provide no-op/overridable stubs so pointer-event-driven tests don't throw.
-if (!("setPointerCapture" in HTMLElement.prototype)) {
-  HTMLElement.prototype.setPointerCapture = vi.fn();
+// Cast to a plain record so TS doesn't complain about properties that are
+// missing from the DOM lib's HTMLElement/Document types.
+const elementProto = HTMLElement.prototype as unknown as Record<string, unknown>;
+if (!("setPointerCapture" in elementProto)) {
+  elementProto.setPointerCapture = vi.fn();
 }
-if (!("releasePointerCapture" in HTMLElement.prototype)) {
-  HTMLElement.prototype.releasePointerCapture = vi.fn();
+if (!("releasePointerCapture" in elementProto)) {
+  elementProto.releasePointerCapture = vi.fn();
 }
-if (!("hasPointerCapture" in HTMLElement.prototype)) {
-  HTMLElement.prototype.hasPointerCapture = vi.fn(() => false);
+if (!("hasPointerCapture" in elementProto)) {
+  elementProto.hasPointerCapture = vi.fn(() => false);
 }
-if (!("elementFromPoint" in document)) {
-  document.elementFromPoint = vi.fn(() => null);
+
+const documentRecord = document as unknown as Record<string, unknown>;
+if (!("elementFromPoint" in documentRecord)) {
+  documentRecord.elementFromPoint = vi.fn(() => null);
 }

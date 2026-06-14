@@ -46,7 +46,16 @@ export async function POST(request: Request) {
     );
 
     if (!response.ok) {
-      return Response.json({ error: "Failed to start Apify run" }, { status: 502 });
+      const errorBody = await response.json().catch(() => null);
+      const apifyMessage = errorBody?.error?.message as string | undefined;
+      return Response.json(
+        {
+          error: apifyMessage
+            ? `Failed to start Apify run: ${apifyMessage}`
+            : `Failed to start Apify run (HTTP ${response.status})`,
+        },
+        { status: 502 }
+      );
     }
 
     const { data } = await response.json();
