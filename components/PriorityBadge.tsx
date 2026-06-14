@@ -9,9 +9,9 @@ const PRIORITY_LABELS: Record<Priority, string> = {
 };
 
 const PRIORITY_CLASSES: Record<Priority, string> = {
-  High: "bg-warn-soft text-warn-strong",
-  Medium: "bg-amber-soft text-amber-strong",
-  Low: "bg-accent-soft text-accent-strong",
+  High: "tag tag-warn",
+  Medium: "tag tag-amber",
+  Low: "tag tag-accent",
 };
 
 const PRIORITY_ICONS: Record<Priority, typeof Flame> = {
@@ -25,9 +25,7 @@ export default function PriorityBadge({ lead }: { lead: LeadRecord }) {
   const Icon = PRIORITY_ICONS[level];
 
   return (
-    <span
-      className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold ${PRIORITY_CLASSES[level]}`}
-    >
+    <span className={`shrink-0 ${PRIORITY_CLASSES[level]}`}>
       <Icon size={12} /> {PRIORITY_LABELS[level]}
     </span>
   );

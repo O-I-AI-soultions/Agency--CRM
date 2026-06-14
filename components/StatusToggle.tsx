@@ -47,12 +47,16 @@ export default function StatusToggle({
         type="button"
         onClick={handleClick}
         disabled={loading}
-        className={`rounded-full px-3 py-2 text-sm font-bold transition-opacity cursor-pointer hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:cursor-not-allowed disabled:opacity-50 ${
-          isActive
-            ? "bg-accent-soft text-accent-strong"
-            : "bg-border text-muted"
+        suppressHydrationWarning
+        className={`btn-outline gap-2 text-sm font-bold cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:cursor-not-allowed disabled:opacity-50 ${
+          isActive ? "text-accent border-accent/30" : ""
         }`}
       >
+        <span
+          className={`inline-block h-2 w-2 rounded-full ${
+            isActive ? "bg-accent" : "bg-muted"
+          }`}
+        />
         {isActive ? "פעיל" : "לא פעיל"}
       </button>
       {error && (
